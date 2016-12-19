@@ -1,0 +1,7 @@
+package pt.ul.fc.di.lasige.simhs.core.domain.scheduling.taxonomy;
+
+import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.IScheduler;
+
+public interface IFJPScheduler extends IScheduler {
+	
+}
