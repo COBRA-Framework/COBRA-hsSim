@@ -118,6 +118,8 @@ public class UMPRComponent extends AbsPeriodicSchedulable implements IComponent,
 				job = new Job((IAbsSchedulable) this, this.getNextJobSequenceNo(), j
 						.getReleaseTime(), j.getRemainingCapacity(), j
 						.getDeadlineTime(), j.getRemainingCapacity());
+				job.setPPT(ppt);
+				job.setPPTSequenceNumber(j.getSequenceNo());
 				result.add(job);
 				addBudget(j.getRemainingCapacity());
 				this.incrementNextJobSequenceNo();

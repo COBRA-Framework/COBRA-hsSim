@@ -21,6 +21,7 @@ package pt.ul.fc.di.lasige.simhs.core.domain.scheduling;
 
 import java.util.Observable;
 
+import pt.ul.fc.di.lasige.simhs.addons.models.PeriodicInterfaceTask;
 import pt.ul.fc.di.lasige.simhs.core.domain.workload.IAbsSchedulable;
 
 /**
@@ -71,6 +72,10 @@ public class Job extends Observable implements Cloneable {
 	 * The job's sequence number
 	 */
 	private final int sequenceNo;
+
+	private PeriodicInterfaceTask ppt;
+
+	private int sequenceNoPPT;
 	
 	@Override
 	public Job clone() {
@@ -106,6 +111,14 @@ public class Job extends Observable implements Cloneable {
 		
 		this.capacity = capacity;
 	}
+
+	public void setPPT(PeriodicInterfaceTask ppt) { this.ppt=ppt; }
+
+	public void setPPTSequenceNumber (int sequenceNo) { this.sequenceNoPPT=sequenceNo; }
+
+	public String getPPTName() { return ppt.toStringId(); }
+
+	public int getPPTSequenceNumber () { return this.sequenceNoPPT; }
 
 	/**
 	 * Returns the absolute deadline (time instant) of this job.
@@ -243,6 +256,6 @@ public class Job extends Observable implements Cloneable {
 		return this.sequenceNo;
 	}
 	
-	
+
 
 }

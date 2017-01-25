@@ -146,8 +146,6 @@ public class UnitLogger implements ILogger<Boolean> {
 
 	@Override
 	public Boolean visit(JobReleasedEvent e) {
-		IAbsSchedulable at = e.getJob().getParentTask();
-		
 		if(!e.getJob().toString().contains("VM"))
 		{
 			String [] a = e.getJob().toString().split("_");
@@ -161,10 +159,9 @@ public class UnitLogger implements ILogger<Boolean> {
 		else
 		//if(e.getJob().getParentTask() instanceof IComponent)
 		{
-			String [] a = e.getJob().toString().split("_");
 			long time = e.getTime();
 			this.printLine("Event ID: "+eventCounter++,0,false);
-			//this.printLine("Job: "+a[1].substring(2,a[1].length())+a[2].substring(4,a[2].length())+"."+(Integer.parseInt(a[3])+1),0,false);
+			this.printLine("Job: "+e.getJob().getPPTName()+"."+(e.getJob().getPPTSequenceNumber()+1),0,false);
 			this.printLine("Type: release",0,false);
 			this.printLine("Time: "+time*mul,0,false);
 			this.printLine("",0,false);
@@ -186,10 +183,9 @@ public class UnitLogger implements ILogger<Boolean> {
 		else
 		//if(e.getJob().getParentTask() instanceof IComponent)
 		{
-			String [] a = e.getJob().toString().split("_");
 			long time = e.getTime();
 			this.printLine("Event ID: "+eventCounter++,0,false);
-			//this.printLine("Job: "+a[1].substring(2,a[1].length())+a[2].substring(4,a[2].length())+"."+(Integer.parseInt(a[3])+1),0,false);
+			this.printLine("Job: "+e.getJob().getPPTName()+"."+(e.getJob().getPPTSequenceNumber()+1),0,false);
 			this.printLine("Type: completion",0,false);
 			this.printLine("Time: "+time*mul,0,false);
 			this.printLine("",0,false);		
@@ -213,11 +209,10 @@ public class UnitLogger implements ILogger<Boolean> {
 		else
 		//if(e.getJob().getParentTask() instanceof IComponent)
 		{
-			String [] a = e.getJob().toString().split("_");
 			int cpu = Integer.parseInt((e.getProcessor().toString().substring(e.getProcessor().toString().length()-1)));
 			long time = e.getTime();
 			this.printLine("Event ID: "+eventCounter++,cpu,false);
-			//this.printLine("Job: "+a[1].substring(2,a[1].length())+a[2].substring(4,a[2].length())+"."+(Integer.parseInt(a[3])+1),cpu,false);
+			this.printLine("Job: "+e.getJob().getPPTName()+"."+(e.getJob().getPPTSequenceNumber()+1),cpu,false);
 			this.printLine("Type: completion",cpu,false);
 			this.printLine("Time: "+time*mul,cpu,false);
 			this.printLine("",cpu,false);
@@ -244,10 +239,9 @@ public class UnitLogger implements ILogger<Boolean> {
 			else
 			{
 				int cpu = Integer.parseInt((e.getProcessor().toString().substring(e.getProcessor().toString().length()-1)));
-				String [] a = e.getPreempted().toString().split("_");
 				long time = e.getTime();
 				this.printLine("Event ID: "+eventCounter++,cpu,false);
-			//	this.printLine("Job: "+a[1].substring(2,a[1].length())+a[2].substring(4,a[2].length())+"."+(Integer.parseInt(a[3])+1),cpu,false);
+				this.printLine("Job: "+e.getPreempted().getPPTName()+"."+(e.getPreempted().getPPTSequenceNumber()+1),cpu,false);
 				this.printLine("Type: switch_away",cpu,false);
 				this.printLine("Time: "+time*mul,cpu,false);
 				this.printLine("",cpu,false);
@@ -270,10 +264,9 @@ public class UnitLogger implements ILogger<Boolean> {
 			else
 			{
 				int cpu = Integer.parseInt((e.getProcessor().toString().substring(e.getProcessor().toString().length()-1)));
-				String [] a = e.getPreemptedBy().toString().split("_");
 				long time = e.getTime();
 				this.printLine("Event ID: "+eventCounter++,cpu,false);
-				//this.printLine("Job: "+a[1].substring(2,a[1].length())+a[2].substring(4,a[2].length())+"."+(Integer.parseInt(a[3])+1),cpu,false);
+				this.printLine("Job: "+e.getPreemptedBy().getPPTName()+"."+(e.getPreemptedBy().getPPTSequenceNumber()+1),cpu,false);
 				this.printLine("Type: switch_to",cpu,false);
 				this.printLine("Time: "+time*mul,cpu,false);
 				this.printLine("",cpu,false);
@@ -292,7 +285,9 @@ public class UnitLogger implements ILogger<Boolean> {
 	public void close() {
 		try {
 			for(BufferedWriter w:outputFilesTasks)
-			w.close();
+				w.close();
+			for(BufferedWriter w:outputFilesVMs)
+				w.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

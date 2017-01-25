@@ -79,7 +79,9 @@ public class MPRSimulator extends AbstractBasicSimulator {
 		String name;
 		mul=1000;
 		double total=0;
-		
+		int taskIndex=1;
+        int vcpuIndex=1;
+
 		for(int i = 0;i<pcpus;i++)
 		{
 			name = "PCPU"+i;
@@ -101,8 +103,9 @@ public class MPRSimulator extends AbstractBasicSimulator {
 			
 			//add VCPUS to c1
 			for(Task task:inter.getTaskset()){
-				c1.addInterfaceTask(new PeriodicInterfaceTask(inter.getInterfaceName()+"_"+task.getName(), c1, task.getExe()*mul,(int)task.getPeriod()*mul,(int)task.getPeriod()*mul));
-			}
+				c1.addInterfaceTask(new PeriodicInterfaceTask(Integer.toString(vcpuIndex++), c1, task.getExe()*mul,(int)task.getPeriod()*mul,(int)task.getPeriod()*mul));
+               // c1.addInterfaceTask(new PeriodicInterfaceTask(inter.getInterfaceName()+"_"+task.getName(), c1, task.getExe()*mul,(int)task.getPeriod()*mul,(int)task.getPeriod()*mul));
+            }
 			
 			vm = VMs.get(interfaces.indexOf(inter));
 			
@@ -110,7 +113,7 @@ public class MPRSimulator extends AbstractBasicSimulator {
 			System.out.println("\t\tLoad: "+c1.getUtilization());
 			//add tasks to the VM
 			for(Task task:vm.getTaskset())
-				c1.addChild(new PeriodicTask(task.getName().substring(4), c1,task.getExe()*mul, (int) task.getPeriod()*mul));	
+                c1.addChild(new PeriodicTask(Integer.toString(taskIndex++), c1, task.getExe() * mul, (int) task.getPeriod() * mul));
 			system.addChild(c1);
 			total = 0;
 		}
