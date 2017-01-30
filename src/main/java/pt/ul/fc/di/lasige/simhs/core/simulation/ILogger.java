@@ -30,6 +30,6 @@ import pt.ul.fc.di.lasige.simhs.core.domain.EventVisitor;
  */
 public interface ILogger<T> extends EventVisitor<T>, Observer {
 	
-	public void close();
+	void close();
 
 }

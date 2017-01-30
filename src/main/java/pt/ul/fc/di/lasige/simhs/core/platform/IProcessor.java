@@ -18,13 +18,13 @@ package pt.ul.fc.di.lasige.simhs.core.platform;
 
 public interface IProcessor extends Comparable<IProcessor> {
 	
-	public IProcessor getParentProcessor();
+	IProcessor getParentProcessor();
 	
-	public IProcessor getRootProcessor();
+	IProcessor getRootProcessor();
 	
-	public double getSpeed();
+	double getSpeed();
 	
 	@Override
-	public String toString();
+    String toString();
 
 }

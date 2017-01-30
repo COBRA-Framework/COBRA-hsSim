@@ -39,47 +39,47 @@ public interface IScheduler extends Observer {
 	 * by this scheduler.
 	 * @param l The logger to be added
 	 */
-	public void addLogger(ILogger<?> l);
+    void addLogger(ILogger<?> l);
 
 	/**
 	 * Advances 
 	 */
-	public void tick();
+    void tick();
 
 	/**
 	 * 
 	 */
-	public void tickle();
+    void tickle();
 
 	/**
 	 * 
 	 * @param t
 	 */
-	public void setTaskSet(Workload t);
+    void setTaskSet(Workload t);
 
 	/**
 	 * 
 	 * @param p
 	 */
-	public void setPlatform(IPlatform p);
+    void setPlatform(IPlatform p);
 	
 	/**
 	 * 
 	 * @param o
 	 */
-	public void addObserver(Observer o);
+    void addObserver(Observer o);
 	
 	/**
 	 * Binds a processor to this scheduler's platform.
 	 * @param proc The processor to bind
 	 */
-	public void bindProcessor(IProcessor proc);
+    void bindProcessor(IProcessor proc);
 	
 	/**
 	 * Unbinds a processor from this scheduler's platform.
 	 * @param proc The processor to unbind
 	 */
-	public void unbindProcessor(IProcessor proc);
+    void unbindProcessor(IProcessor proc);
 
 }
 

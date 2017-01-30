@@ -18,14 +18,14 @@ package pt.ul.fc.di.lasige.simhs.core.platform;
 
 public interface IPlatform extends Cloneable, Iterable<IProcessor> {
 
-	public IPlatform clone();
+	IPlatform clone();
 	
-	public int getNumberOfProcessors();
+	int getNumberOfProcessors();
 	
-	public double getTotalCapacity();
+	double getTotalCapacity();
 	
-	public void bindProcessor(IProcessor proc);
+	void bindProcessor(IProcessor proc);
 	
-	public void unbindProcessor(IProcessor proc);
+	void unbindProcessor(IProcessor proc);
 
 }

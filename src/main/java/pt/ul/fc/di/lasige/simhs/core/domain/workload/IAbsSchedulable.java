@@ -24,37 +24,37 @@ import pt.ul.fc.di.lasige.simhs.core.platform.IProcessor;
 
 public interface IAbsSchedulable extends Comparable<IAbsSchedulable>,Cloneable {
 
-	public IComponent getParent();
+	IComponent getParent();
 
-	public void tick();
+	void tick();
 
-	public void tickle();
+	void tickle();
 
-	public void tickle(double exec);
+	void tickle(double exec);
 
-	public String toStringId();
+	String toStringId();
 
 	/**
 	 * 
 	 * @param releaseTime
 	 * @return null if no job is to be launched at this time.
 	 */
-	public List<Job> launchJob(int releaseTime);
+    List<Job> launchJob(int releaseTime);
 
-	public int hashCode();
+	int hashCode();
 
-	public boolean equals(Object obj);
+	boolean equals(Object obj);
 
-	public void addObserver(Observer o);
+	void addObserver(Observer o);
 	
-	public double getCapacity();
+	double getCapacity();
 	
-	public double getUtilization();
+	double getUtilization();
 	
-	public IAbsSchedulable clone();
+	IAbsSchedulable clone();
 
-	public void bindProcessor(IProcessor proc);
+	void bindProcessor(IProcessor proc);
 
-	public void unbindProcessor(IProcessor proc);
+	void unbindProcessor(IProcessor proc);
 
 }
