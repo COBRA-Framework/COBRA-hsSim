@@ -50,7 +50,7 @@ public class UMPRComponent extends AbsPeriodicSchedulable implements IComponent,
 	private IComponent decorator;
 
 	private List<PeriodicInterfaceTask> interfaceTasks;
-
+	private int PPTNumber = 0;
 	public UMPRComponent clone() {
 		UMPRComponent other = null;
 
@@ -60,9 +60,9 @@ public class UMPRComponent extends AbsPeriodicSchedulable implements IComponent,
 	}
 
 
-	public UMPRComponent(String id, IComponent parent, double capacity, int period) {
+	public UMPRComponent(String id, IComponent parent, double capacity, int period, int numberOfProcs) {
 		super(id, parent, capacity, period);
-		this.decorator = new BasicComponent(new VirtualPlatform());
+		this.decorator = new BasicComponent(new VirtualPlatform(numberOfProcs));
 		this.interfaceTasks = new ArrayList<PeriodicInterfaceTask>();
 	}
 
@@ -83,16 +83,15 @@ public class UMPRComponent extends AbsPeriodicSchedulable implements IComponent,
 		consumeBudget(exec);
 	}
 
-
-
 	public void addChild(IAbsSchedulable at) {
 		decorator.addChild(at);
 		at.addObserver(this);
 	}
 
 	public void setScheduler(IScheduler s) {
-		decorator.setScheduler(s);		
+		decorator.setScheduler(s);
 		s.addObserver(this);
+		s.setObserver(this);
 	}
 
 	@Override
@@ -129,7 +128,8 @@ public class UMPRComponent extends AbsPeriodicSchedulable implements IComponent,
 	}
 
 	public void addInterfaceTask(PeriodicInterfaceTask ppt) {
-		interfaceTasks.add(ppt); //TODO autogenerate these
+		interfaceTasks.add(ppt);
+		ppt.setCoreID(this.PPTNumber++);
 	}
 
 	@Override
@@ -149,30 +149,31 @@ public class UMPRComponent extends AbsPeriodicSchedulable implements IComponent,
 
 
 	@Override
-	public void bindProcessor(IProcessor proc) {
+	public void bindProcessor(IProcessor proc, int numberOfProc) {
+		//int numberOfProc = 0;
 		//System.err.println("Bound "+proc.toString()+" to " + this.toStringId());
-		decorator.bindProcessor(proc);
+		decorator.bindProcessor(proc, numberOfProc);
 	}
 
 
 	@Override
-	public void unbindProcessor(IProcessor proc) {
+	public void unbindProcessor(IProcessor proc, int numberOfProc) {
+		//int numberOfProc = 0;
 		//System.err.println("Unbound "+proc.toString()+" from " + this.toStringId());
-		decorator.unbindProcessor(proc);
+		decorator.unbindProcessor(proc,numberOfProc);
 	}
 
 
 	@Override
 	public IScheduler getScheduler() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return decorator.getScheduler();
 	}
 
 
 	@Override
 	public Workload getWorkload() {
-		// TODO Auto-generated method stub
-		return null;
+		return decorator.getWorkload();
 	}
 
 

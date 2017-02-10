@@ -24,6 +24,6 @@ public interface IReader extends Iterable<RTSystem> {
 	 * Gets the next system in the pool.
 	 * @return A system.
 	 */
-    RTSystem getSystem();
+	public abstract RTSystem getSystem();
 
 }

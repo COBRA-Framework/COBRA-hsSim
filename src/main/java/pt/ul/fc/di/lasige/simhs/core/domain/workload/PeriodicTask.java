@@ -28,14 +28,19 @@ import pt.ul.fc.di.lasige.simhs.core.platform.IProcessor;
 public class PeriodicTask extends AbsPeriodicSchedulable implements IPeriodic,ITask {
 	
 
+	public PeriodicTask(String id, IComponent parent, double capacity, int period, int deadline, int processor) {
+		super(id, parent, capacity, period, deadline,processor);
+	}
+
 	public PeriodicTask(String id, IComponent parent, double capacity, int period,
-			int deadline) {
+						int deadline) {
 		super(id, parent, capacity, period, deadline);
 	}
-	
+
 	public PeriodicTask(String id, IComponent parent, double capacity, int period) {
 		super(id, parent, capacity, period);
 	}
+
 
 	/* (non-Javadoc)
 	 * @see pt.ul.fc.di.lasige.simhs.domain.workload.ITask#tick()
@@ -75,14 +80,14 @@ public class PeriodicTask extends AbsPeriodicSchedulable implements IPeriodic,IT
 
 
 	@Override
-	public void bindProcessor(IProcessor proc) {
+	public void bindProcessor(IProcessor proc, int numberOfProc) {
 		// do nothing
 		return;
 	}
 
 
 	@Override
-	public void unbindProcessor(IProcessor proc) {
+	public void unbindProcessor(IProcessor proc, int numberOfPro) {
 		// do nothing
 		return;
 	}

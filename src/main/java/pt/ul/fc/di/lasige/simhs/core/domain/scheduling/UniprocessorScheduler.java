@@ -16,9 +16,7 @@
  */
 package pt.ul.fc.di.lasige.simhs.core.domain.scheduling;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import pt.ul.fc.di.lasige.simhs.core.domain.events.JobCompletedEvent;
 import pt.ul.fc.di.lasige.simhs.core.domain.events.JobDeadlineMissEvent;
@@ -35,17 +33,22 @@ public abstract class UniprocessorScheduler extends AbsScheduler {
 
 	private final JobQueue readyQueue;
 	private Job current;
-	
+	private IProcessor jobProc;
 	protected UniprocessorScheduler() {
 		super();
 		this.readyQueue = new JobQueue(this.getPolicy());
 	}
-	
-	public void setNumberOfProcessors(int numberOfProcessors) throws InstantiationException {
-		if (numberOfProcessors != 1)
-			throw new InstantiationException();
+
+	@Override
+	protected abstract SchedulingPolicy getPolicy();
+
+	public void tick() {
+		super.tick();
+		pruneCompletedJobs();
+		checkDeadlineMiss();
+		readyQueue.refresh();
 	}
-	
+
 	protected boolean isCurrent(Job j) {
 		return this.current.equals(j);
 	}
@@ -69,10 +72,27 @@ public abstract class UniprocessorScheduler extends AbsScheduler {
 				addToReadyQueue(heir);
 
 		}
-
-		checkDeadlineMiss();
 	}
-	
+	private void pruneCompletedJobs() {
+
+		final Collection<Job> completedJobsToRemove = new ArrayList<Job>();
+		for (Job j : readyQueue) {
+
+			if (j.isCompleted()) {
+				setChanged();
+				notifyObservers(new JobCompletedEvent(getInternalTime(), j,
+						jobProc));
+
+				completedJobsToRemove.add(j); //no concurrent modif
+			}
+
+		}
+		for (Job j : completedJobsToRemove) {
+			removeFromReadyQueue(j);
+			removeFromCurrent(j);
+		}
+
+	}
 
 
 
@@ -100,22 +120,6 @@ public abstract class UniprocessorScheduler extends AbsScheduler {
 		
 		final Collection<Job> toRemove = new ArrayList<Job>();
 
-		for (Job j : this.readyQueue ) {
-
-			if (j.getRemainingCapacity() == 0) {
-				setChanged();
-				notifyObservers(new JobCompletedEvent(getInternalTime(), j));
-				toRemove.add(j);
-				if (isCurrent(j)) {
-					removeFromCurrent(j);
-				}
-			}
-		}
-		
-		for (Job j : toRemove) {
-			removeFromReadyQueue(j);
-		}
-
 		for (IAbsSchedulable at : getTaskSet()) {
 			at.tick();
 			List<Job> jobsToLaunch = at.launchJob(getInternalTime());
@@ -125,7 +129,7 @@ public abstract class UniprocessorScheduler extends AbsScheduler {
 				addToReadyQueue(j);
 
 				setChanged();				
-				notifyObservers(new JobReleasedEvent (getInternalTime(), j));
+				notifyObservers(new JobReleasedEvent (getInternalTime(), j.clone()));
 			}
 		}
 
@@ -168,8 +172,13 @@ public abstract class UniprocessorScheduler extends AbsScheduler {
 	
 	@Override
 	protected void preemptJobInProc(IProcessor proc) {
-		//TODO
-		throw new UnsupportedOperationException();
+
+		final Job preempted = current;
+		if (preempted != null && proc.equals(jobProc)) {
+			removeFromCurrent(preempted);
+			setChanged();
+			notifyObservers(new JobPreemptedEvent(getInternalTime(), preempted, null, proc));
+		}
 	}
 	
 

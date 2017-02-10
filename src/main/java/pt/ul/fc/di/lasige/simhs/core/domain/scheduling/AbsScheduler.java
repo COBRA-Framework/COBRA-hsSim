@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import pt.ul.fc.di.lasige.simhs.core.domain.events.JobCompletedEvent;
+import pt.ul.fc.di.lasige.simhs.core.domain.workload.IComponent;
 import pt.ul.fc.di.lasige.simhs.core.domain.workload.Workload;
 import pt.ul.fc.di.lasige.simhs.core.platform.IPlatform;
 import pt.ul.fc.di.lasige.simhs.core.platform.IProcessor;
@@ -70,7 +71,7 @@ public abstract class AbsScheduler extends Observable implements IScheduler,Obse
 	/**
 	 * Method addLogger.
 	 * @param l ILogger<?>
-	 * @see pt.ul.fc.di.lasige.simhs.domain.scheduling.IScheduler#addLogger(ILogger<?>)
+	 *
 	 */
 	public void addLogger(ILogger<?> l){
 		this.addObserver(l);
@@ -175,14 +176,14 @@ public abstract class AbsScheduler extends Observable implements IScheduler,Obse
 	}
 	
 	@Override
-	public void bindProcessor(IProcessor proc) {
-		this.platform.bindProcessor(proc);
+	public void bindProcessor(IProcessor proc, int numberOfProc) {
+		this.platform.bindProcessor(proc,numberOfProc);
 	}
 
 	@Override
-	public void unbindProcessor(IProcessor proc) {
+	public void unbindProcessor(IProcessor proc, int numberOfProc) {
 		preemptJobInProc(proc);
-		this.platform.unbindProcessor(proc);
+		this.platform.unbindProcessor(proc,numberOfProc);
 	}
 	
 	protected abstract void preemptJobInProc(IProcessor proc);
@@ -194,6 +195,8 @@ public abstract class AbsScheduler extends Observable implements IScheduler,Obse
 	protected void setJobDeadlineAlreadyNotified(Job job) {
 		this.deadlineMissesAlreadyNotified.add(job);
 	}
+
+	public void setObserver(Observer c1){};
 	
 }
 

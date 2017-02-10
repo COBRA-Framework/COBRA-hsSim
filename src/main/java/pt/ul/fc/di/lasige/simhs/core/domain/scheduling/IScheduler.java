@@ -21,6 +21,7 @@ package pt.ul.fc.di.lasige.simhs.core.domain.scheduling;
 
 import java.util.Observer;
 
+import pt.ul.fc.di.lasige.simhs.core.domain.workload.IComponent;
 import pt.ul.fc.di.lasige.simhs.core.domain.workload.Workload;
 import pt.ul.fc.di.lasige.simhs.core.platform.IPlatform;
 import pt.ul.fc.di.lasige.simhs.core.platform.IProcessor;
@@ -39,47 +40,49 @@ public interface IScheduler extends Observer {
 	 * by this scheduler.
 	 * @param l The logger to be added
 	 */
-    void addLogger(ILogger<?> l);
+	public void addLogger(ILogger<?> l);
 
 	/**
 	 * Advances 
 	 */
-    void tick();
+	public void tick();
 
 	/**
 	 * 
 	 */
-    void tickle();
+	public void tickle();
 
 	/**
 	 * 
 	 * @param t
 	 */
-    void setTaskSet(Workload t);
+	public void setTaskSet(Workload t);
 
 	/**
 	 * 
 	 * @param p
 	 */
-    void setPlatform(IPlatform p);
+	public void setPlatform(IPlatform p);
 	
 	/**
 	 * 
 	 * @param o
 	 */
-    void addObserver(Observer o);
+	public void addObserver(Observer o);
 	
 	/**
 	 * Binds a processor to this scheduler's platform.
 	 * @param proc The processor to bind
 	 */
-    void bindProcessor(IProcessor proc);
+	public void bindProcessor(IProcessor proc,int numberOfProc);
 	
 	/**
 	 * Unbinds a processor from this scheduler's platform.
 	 * @param proc The processor to unbind
 	 */
-    void unbindProcessor(IProcessor proc);
+	public void unbindProcessor(IProcessor proc, int numberOfProc);
+
+	public void setObserver(Observer c);
 
 }
 

@@ -69,6 +69,7 @@ public class BasicComponent extends AbsPeriodicSchedulable  implements IComponen
 	@Override
 	public void addChild(IAbsSchedulable at) {
 		this.taskset.add(at);
+		//this.scheduler.setTaskSet(this.taskset);
 	}
 
 	@Override
@@ -113,13 +114,13 @@ public class BasicComponent extends AbsPeriodicSchedulable  implements IComponen
 	}
 
 	@Override
-	public void bindProcessor(IProcessor proc) {
-		this.scheduler.bindProcessor(proc);
+	public void bindProcessor(IProcessor proc, int numberOfProc) {
+		this.scheduler.bindProcessor(proc,numberOfProc);
 	}
 
 	@Override
-	public void unbindProcessor(IProcessor proc) {
-		this.scheduler.unbindProcessor(proc);
+	public void unbindProcessor(IProcessor proc, int numberOfProc) {
+		this.scheduler.unbindProcessor(proc,numberOfProc);
 	}
 
 	@Override

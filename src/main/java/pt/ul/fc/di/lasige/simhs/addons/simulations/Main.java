@@ -13,7 +13,7 @@ public class Main {
 			error+="This java program must have 4 arguments as input:\n";
 			error+="\t1) The input taskset for each VM\n";
 			error+="\t2) The interfaces of each VM\n";
-			error+="\t3) The number of physical processors (speed 1)\n";
+			error+="\t3) The number physical processors (speed 1)\n";
 			error+="\t4) The simulation time in milliseconds\n\n";
 			
 			error+="For example: \"java -jar hssim.jar TaskSet_390.0_v0.xml interfaces.xml 4 30000\"";
@@ -53,6 +53,7 @@ public class Main {
 		try{
 			a = System.currentTimeMillis();
 			MPRSimulator MPRS = new MPRSimulator(args[0],args[1],Integer.parseInt(args[2]),Long.parseLong(args[3]));
+			//UMPRSimulator MPRS = new UMPRSimulator(10000);
 			System.out.println("\nSimulation started");
 			MPRS.run();
 			b = System.currentTimeMillis();
@@ -72,7 +73,7 @@ public class Main {
 		error+="This java program must have 4 arguments as input:\n";
 		error+="\t1) The input taskset for each VM\n";
 		error+="\t2) The interfaces of each VM\n";
-		error+="\t3) The number of physical processors (speed 1)\n";
+		error+="\t3) The number physical processors (speed 1)\n";
 		error+="\t4) The simulation time in milliseconds\n\n";
 		
 		error+="For example: \"java -jar hssim.jar TaskSet_390.0_v0.xml interfaces.xml 4 30000\"";

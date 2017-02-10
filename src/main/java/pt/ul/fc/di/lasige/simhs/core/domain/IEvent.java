@@ -18,8 +18,8 @@ package pt.ul.fc.di.lasige.simhs.core.domain;
 
 public interface IEvent {
 
-	<T> T accept(EventVisitor<T> visitor);
+	public abstract <T> T accept(EventVisitor<T> visitor);
 
-	int getTime();
+	public abstract int getTime();
 
 }

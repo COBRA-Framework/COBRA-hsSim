@@ -29,6 +29,7 @@ import pt.ul.fc.di.lasige.simhs.core.domain.workload.PeriodicTask;
  */
 public class PeriodicInterfaceTask extends PeriodicTask {
 
+	private int coreID;
 	/**
 	 * @param id
 	 * @param parent
@@ -36,9 +37,8 @@ public class PeriodicInterfaceTask extends PeriodicTask {
 	 * @param period
 	 * @param deadline
 	 */
-	public PeriodicInterfaceTask(String id, IComponent parent, double capacity,
-			int period, int deadline) {
-		super(id, parent, capacity, period, deadline);
+	public PeriodicInterfaceTask(String id, IComponent parent, double capacity, int period, int deadline, int processor) {
+		super(id, parent, capacity, period, deadline, processor);
 	}
 
 	/**
@@ -51,7 +51,6 @@ public class PeriodicInterfaceTask extends PeriodicTask {
 			int period) {
 		super(id, parent, capacity, period);
 	}
-	
 	/* (non-Javadoc)
 	 * @see pt.ul.fc.di.lasige.simhs.domain.workload.AbsPeriodicSchedulable#launchJob(int)
 	 */
@@ -67,6 +66,15 @@ public class PeriodicInterfaceTask extends PeriodicTask {
 	
 	public PeriodicInterfaceTask clone() {
 		return (PeriodicInterfaceTask) super.clone();
+	}
+
+	public void setCoreID(int coreID)
+	{
+		this.coreID = coreID;
+	}
+	public int getCoreID()
+	{
+		return coreID;
 	}
 
 }

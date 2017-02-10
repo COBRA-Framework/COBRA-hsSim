@@ -27,7 +27,7 @@ import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.taxonomy.IFJPScheduler;
  * @author jcraveiro
  *
  */
-public class EDFScheduler extends UniprocessorScheduler implements IFJPScheduler {
+public class UPEDFScheduler extends PartitionedUniprocessorScheduler implements IFJPScheduler {
 
 	@Override
 	protected SchedulingPolicy getPolicy() {

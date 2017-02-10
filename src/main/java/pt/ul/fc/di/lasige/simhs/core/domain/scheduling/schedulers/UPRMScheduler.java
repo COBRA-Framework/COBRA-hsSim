@@ -17,19 +17,25 @@
 /**
  * 
  */
-package pt.ul.fc.di.lasige.simhs.core.simulation;
+package pt.ul.fc.di.lasige.simhs.core.domain.scheduling.schedulers;
 
-import java.util.Observer;
-
-import pt.ul.fc.di.lasige.simhs.core.domain.EventVisitor;
+import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.PartitionedUniprocessorScheduler;
+import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.SchedulingPolicy;
+import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.UniprocessorScheduler;
+import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.policies.RMSchedulingPolicy;
+import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.taxonomy.IFTPScheduler;
 
 /**
- * Interface defining a generic logger.
  * @author jcraveiro
  *
  */
-public interface ILogger<T> extends EventVisitor<T>, Observer {
+public class UPRMScheduler extends PartitionedUniprocessorScheduler implements IFTPScheduler {
+
+	@Override
+	protected SchedulingPolicy getPolicy() {
+		return new RMSchedulingPolicy();
+	}
 	
-	public void close();
+	
 
 }

@@ -18,7 +18,7 @@ package pt.ul.fc.di.lasige.simhs.core.domain.workload;
 
 public interface IPeriodic extends IAbsSchedulable {
 
-	int getPeriod();
+	public int getPeriod();
 	
-	int getRelativeDeadline();
+	public int getRelativeDeadline();
 }

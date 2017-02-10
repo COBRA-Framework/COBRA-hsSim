@@ -22,11 +22,10 @@ package pt.ul.fc.di.lasige.simhs.core.domain.scheduling.schedulers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.MultiprocessorPartitionedScheduler;
-import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.SchedulingPolicy;
-import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.UniprocessorScheduler;
+import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.*;
 import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.policies.EDFSchedulingPolicy;
 import pt.ul.fc.di.lasige.simhs.core.domain.scheduling.taxonomy.IFTPScheduler;
+import pt.ul.fc.di.lasige.simhs.core.domain.workload.IAbsSchedulable;
 
 /**
  * @author jcraveiro
@@ -45,11 +44,12 @@ public class PartitionedEDFScheduler extends MultiprocessorPartitionedScheduler 
 	 * @see pt.ul.fc.di.lasige.simhs.domain.schedulers.MultiprocessorPartitionedScheduler#getNewSchedulerCollection(int)
 	 */
 	@Override
-	protected Collection<? extends UniprocessorScheduler> getNewSchedulerCollection(
+	protected Collection<? extends PartitionedUniprocessorScheduler> getNewSchedulerCollection(
 			int n) {
-		Collection<EDFScheduler> result = new ArrayList<EDFScheduler>();
-		for (int i=0; i<n; i++)
-			result.add(new EDFScheduler());
+		Collection<UPEDFScheduler> result = new ArrayList<>();
+		for (int i=0; i<n; i++) {
+			result.add(new UPEDFScheduler());
+		}
 		return result;
 	}
 

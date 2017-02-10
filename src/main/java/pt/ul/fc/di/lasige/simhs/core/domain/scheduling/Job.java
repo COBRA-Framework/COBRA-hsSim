@@ -57,7 +57,6 @@ public class Job extends Observable implements Cloneable {
 	 * The amount of execution units.
 	 */
 	private double capacity;
-	
 	/**
 	 * The instant at which this job was released.
 	 */
@@ -120,6 +119,8 @@ public class Job extends Observable implements Cloneable {
 
 	public int getPPTSequenceNumber () { return this.sequenceNoPPT; }
 
+	public PeriodicInterfaceTask getPPT (){return this.ppt;}
+
 	/**
 	 * Returns the absolute deadline (time instant) of this job.
 	 * @return the absolute deadline (time instant) of this job
@@ -159,7 +160,6 @@ public class Job extends Observable implements Cloneable {
 	public boolean isCompleted() {
 		return this.remainingCapacity <= EPSILON;
 	}
-
 
 	/**
 	 * Returnts the schedulable entity of which this job is an instance. This may not necessarily be the schedulable entity

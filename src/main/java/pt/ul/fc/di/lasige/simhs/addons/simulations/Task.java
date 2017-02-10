@@ -13,15 +13,17 @@ public class Task {
 	private double period;
 	private double exe;
 	private double deadline;
+	private int core;
 	private String name;
 	
 	
-	public Task(String name, String period, String deadline, String exe){
+	public Task(String name, String period, String deadline, String exe, String core){
 		
 		this.name = name;
 		this.period = Double.parseDouble(period);
 		this.deadline = Double.parseDouble(deadline);
 		this.exe = Double.parseDouble(exe);
+		this.core = Integer.parseInt(core);
 		if(this.exe > this.deadline){
 			System.err.println("\r\nATTENTION: task's execution > deadline!\r\n");
 		}
@@ -47,7 +49,7 @@ public class Task {
 	public String toString(){
 		String str = "--task--";
 		str += "name:" + this.name + ", period:" + this.period + ", exe:" + this.exe + 
-				", deadline:" + this.deadline;
+				", deadline:" + this.deadline+", core:"+this.core;
 		return str;
 	}
 	
@@ -85,7 +87,11 @@ public class Task {
 	public double getCI(double t){
 		return Math.min(exe, Math.max(0, t - Math.floor((t+(period - deadline))/period)*period));
 	}
-	
+	public int getCore() {		return core;	}
+	public void setCore(int core) {		this.core = core;	}
 
-	
+
+
+
+
 }

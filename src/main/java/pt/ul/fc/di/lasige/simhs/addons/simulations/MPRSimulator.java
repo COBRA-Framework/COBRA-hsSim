@@ -32,6 +32,7 @@ import pt.ul.fc.di.lasige.simhs.core.platform.PhysicalPlatform;
 import pt.ul.fc.di.lasige.simhs.core.platform.PhysicalProcessor;
 import pt.ul.fc.di.lasige.simhs.core.simulation.AbstractBasicSimulator;
 import pt.ul.fc.di.lasige.simhs.core.simulation.ILogger;
+import sun.misc.VM;
 
 /**
  * @author jcraveiro
@@ -71,9 +72,7 @@ public class MPRSimulator extends AbstractBasicSimulator {
 	}
 	@Override
 	protected RTSystem obtainSystem() throws InstantiationException, IllegalAccessException {
-		
-		
-		IPlatform base = new PhysicalPlatform();
+		IPlatform base = new PhysicalPlatform(pcpus);
 		UMPRComponent c1;
 		Component vm;
 		String name;
@@ -81,39 +80,40 @@ public class MPRSimulator extends AbstractBasicSimulator {
 		double total=0;
 		int taskIndex=1;
         int vcpuIndex=1;
-
+		int VMIndex = 0;
 		for(int i = 0;i<pcpus;i++)
 		{
 			name = "PCPU"+i;
-			base.bindProcessor(new PhysicalProcessor(name, 1.0));
+			base.bindProcessor(new PhysicalProcessor(name, 1.0),i);
+			System.out.println("Physical processor added: PCPU"+i);
 		}
-		
+		System.out.println("\nNumber of VMs: "+interfaces.size()+"\n");
 		System.out.println("Simulation information:");
 		RTSystem system = new RTSystem(base);		
 		selectAlgorithm(system, parentScheduler);
 		System.out.println("\tScheduler system: "+parentScheduler);
-
 		for(Interface inter:interfaces){
 			for(Task task:inter.getTaskset()){
 				total += task.getExe();
 			}
-			c1 = new UMPRComponent(inter.getInterfaceName(), system.getRootComponent(), total*mul, (int) inter.getTaskset().get(0).getPeriod()*mul);
-			c1.setScheduler(new GEDFScheduler());
-			selectAlgorithm(c1,VMs.get(interfaces.indexOf(inter)).getSchedulingPolicy(),inter.getTaskset().size());
-			
-			//add VCPUS to c1
+			String algorithm = VMs.get(VMIndex).getSchedulingPolicy();
+			c1 = new UMPRComponent(inter.getInterfaceName(), system.getRootComponent(), total*mul, (int) inter.getTaskset().get(0).getPeriod()*mul,inter.getTaskset().size());
+			selectAlgorithm(c1,algorithm,inter.getTaskset().size());
+			System.out.println(inter.getInterfaceName()+"\n\tInterfaceTasks:");
 			for(Task task:inter.getTaskset()){
-				c1.addInterfaceTask(new PeriodicInterfaceTask(Integer.toString(vcpuIndex++), c1, task.getExe()*mul,(int)task.getPeriod()*mul,(int)task.getPeriod()*mul));
-               // c1.addInterfaceTask(new PeriodicInterfaceTask(inter.getInterfaceName()+"_"+task.getName(), c1, task.getExe()*mul,(int)task.getPeriod()*mul,(int)task.getPeriod()*mul));
-            }
-			
-			vm = VMs.get(interfaces.indexOf(inter));
-			
-			System.out.println("\tScheduler "+vm.getComponentName()+": "+vm.getSchedulingPolicy());
-			System.out.println("\t\tLoad: "+c1.getUtilization());
-			//add tasks to the VM
-			for(Task task:vm.getTaskset())
-                c1.addChild(new PeriodicTask(Integer.toString(taskIndex++), c1, task.getExe() * mul, (int) task.getPeriod() * mul));
+				c1.addInterfaceTask(new PeriodicInterfaceTask(Integer.toString(vcpuIndex++), c1, task.getExe()*mul,(int)task.getPeriod()*mul,(int)task.getDeadline()*mul,task.getCore()));
+				System.out.println("\t"+task.toString());
+			}
+			vm = VMs.get(VMIndex);
+			System.out.println("TaskSet of "+inter.getInterfaceName());
+			for(Task task:vm.getTaskset()) {
+				c1.addChild(new PeriodicTask(Integer.toString(taskIndex++), c1, task.getExe() * mul, (int) task.getPeriod() * mul, (int) task.getDeadline() * mul, task.getCore()));
+				System.out.println("\t"+task.toString());
+			}
+			VMIndex++;
+
+			System.out.println("\tScheduler "+inter.getInterfaceName()+": "+algorithm);
+			//System.out.println("\t\tLoad: "+c1.getUtilization());
 			system.addChild(c1);
 			total = 0;
 		}

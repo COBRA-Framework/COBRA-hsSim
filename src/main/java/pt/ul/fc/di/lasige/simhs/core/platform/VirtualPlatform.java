@@ -16,16 +16,16 @@
  */
 package pt.ul.fc.di.lasige.simhs.core.platform;
 
-import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class VirtualPlatform implements IPlatform {
 	
-	private final SortedSet<IProcessor> procs;
-	
-	public VirtualPlatform() {
-		this.procs = new TreeSet<IProcessor>();
+	private final Map<Integer,IProcessor> procs;
+	private int maxProcessors;
+	public VirtualPlatform(int numberOfProcs) {
+		this.procs = new TreeMap<Integer,IProcessor>();
+
 	}
 	
 	public VirtualPlatform clone() {
@@ -45,34 +45,50 @@ public class VirtualPlatform implements IPlatform {
 
 	@Override
 	public Iterator<IProcessor> iterator() {
-		return this.procs.iterator();
+		return this.procs.values().iterator();
 	}
 
 	@Override
-	public void bindProcessor(IProcessor proc) {
-		this.procs.add(new VirtualProcessor(proc));
+	public void bindProcessor(IProcessor proc, int numberOfProc) {
+		this.procs.put(numberOfProc,new VirtualProcessor(proc));
 	}
 
 	@Override
-	public void unbindProcessor(IProcessor proc) {
-		final SortedSet<IProcessor> toRemove = new TreeSet<IProcessor>();
-		for (IProcessor i : this.procs) {
-			if (i.getParentProcessor().equals(proc)) {
-				toRemove.add(i);
+	public void unbindProcessor(IProcessor proc, int numberOfProc) {
+		List<Integer> toRemove = new ArrayList<>();
+		for (Map.Entry<Integer,IProcessor> i : this.procs.entrySet()) {
+			if (i.getValue().getParentProcessor().equals(proc)) {
+				toRemove.add(i.getKey());
 			}
 		}
-		
-		for (IProcessor i : toRemove) {
-			this.procs.remove(i);
+
+		for (Integer i : toRemove) {
+			if(this.procs.containsKey(i))
+				this.procs.remove(i);
 		}
-		
+	}
+
+	@Override
+	public void maxProcessors(int n) {
+		this.maxProcessors = n;
+	}
+
+	@Override
+	public List<Integer> getActiveProcs() {
+		List<Integer> procs = new ArrayList<>();
+		for(int k=0;k<maxProcessors;k++)
+		{
+			if(this.procs.containsKey(k))
+				procs.add(k);
+		}
+		return procs;
 	}
 
 	@Override
 	public double getTotalCapacity() {
 		double result = 0.0;
-		for (IProcessor p : this.procs)
-			result += p.getSpeed();
+		for (Map.Entry<Integer,IProcessor> p : this.procs.entrySet())
+			result += p.getValue().getSpeed();
 		return result;
 	}
 

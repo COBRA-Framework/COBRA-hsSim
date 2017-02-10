@@ -132,6 +132,7 @@ public class UnitLogger implements ILogger<Boolean> {
 					addOutputFile(false);
 				outputFilesVMs.get(pcpu).write(line+"\n");
 			}
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -197,6 +198,7 @@ public class UnitLogger implements ILogger<Boolean> {
 	public Boolean visit(JobCompletedEvent e) {
 		if(!e.getJob().toString().contains("VM"))
 		{
+
 			String [] a = e.getJob().toString().split("_");
 			int cpu = Integer.parseInt((e.getProcessor().toString().substring(e.getProcessor().toString().length()-1)));
 			long time = e.getTime();
@@ -205,6 +207,8 @@ public class UnitLogger implements ILogger<Boolean> {
 			this.printLine("Type: completion",cpu,true);
 			this.printLine("Time: "+time*mul,cpu,true);
 			this.printLine("",cpu,true);
+			//if(cpu==0)
+				//System.out.println(e.getTime()+" "+a[1]+"."+(Integer.parseInt(a[2])+1));
 		}
 		else
 		//if(e.getJob().getParentTask() instanceof IComponent)

@@ -16,16 +16,16 @@
  */
 package pt.ul.fc.di.lasige.simhs.core.platform;
 
-import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class PhysicalPlatform implements IPlatform {
-	
-	private final SortedSet<IProcessor> procs;
-	
-	public PhysicalPlatform() {
-		this.procs = new TreeSet<IProcessor>();
+
+	private final Map<Integer,IProcessor> procs;
+	private int maxNumberofProcs;
+
+	public PhysicalPlatform(int maxNumberOfProcs) {
+		this.procs = new TreeMap<Integer,IProcessor>();
+		this.maxNumberofProcs = maxNumberOfProcs;
 	}
 	
 	public PhysicalPlatform clone() {
@@ -37,6 +37,10 @@ public class PhysicalPlatform implements IPlatform {
 		}
 		return other;
 	}
+	@Override
+	public void maxProcessors(int n) {
+
+	}
 
 	@Override
 	public int getNumberOfProcessors() {
@@ -45,24 +49,42 @@ public class PhysicalPlatform implements IPlatform {
 
 	@Override
 	public Iterator<IProcessor> iterator() {
-		return this.procs.iterator();
+		return this.procs.values().iterator();
 	}
 
 	@Override
-	public void bindProcessor(IProcessor proc) {
-		this.procs.add(proc);
+	public void bindProcessor(IProcessor proc, int numberProc) {
+		this.procs.put(numberProc,proc);
 	}
 
 	@Override
-	public void unbindProcessor(IProcessor proc) {
-		this.procs.remove(proc);
+	public void unbindProcessor(IProcessor proc, int numberProc) {
+		List<Integer> toRemove = new ArrayList<>();
+		for (Map.Entry<Integer,IProcessor> i : this.procs.entrySet()) {
+			if (i.equals(proc)) {
+				toRemove.add(i.getKey());
+			}
+		}
+
+		for (Integer i : toRemove) {
+			if(this.procs.containsKey(i))
+				this.procs.remove(i);
+		}
 	}
 	
 	@Override
+	public List<Integer> getActiveProcs() {
+		List<Integer> procs = new ArrayList<>();
+		for(Map.Entry<Integer,IProcessor> i:this.procs.entrySet())
+			procs.add(i.getKey());
+		return procs;
+	}
+
+	@Override
 	public double getTotalCapacity() {
 		double result = 0.0;
-		for (IProcessor p : this.procs)
-			result += p.getSpeed();
+		for (Map.Entry<Integer,IProcessor> p : this.procs.entrySet())
+			result += p.getValue().getSpeed();
 		return result;
 	}
 

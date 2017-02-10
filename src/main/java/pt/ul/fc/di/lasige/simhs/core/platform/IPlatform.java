@@ -16,16 +16,22 @@
  */
 package pt.ul.fc.di.lasige.simhs.core.platform;
 
+import java.util.List;
+
 public interface IPlatform extends Cloneable, Iterable<IProcessor> {
 
-	IPlatform clone();
+	public IPlatform clone();
 	
-	int getNumberOfProcessors();
+	public int getNumberOfProcessors();
 	
-	double getTotalCapacity();
+	public double getTotalCapacity();
 	
-	void bindProcessor(IProcessor proc);
+	public void bindProcessor(IProcessor proc, int numberOfProc); //this is relative to the component, for virtual components this needs to be the number or id of the interfaceTask
 	
-	void unbindProcessor(IProcessor proc);
+	public void unbindProcessor(IProcessor proc, int numberOfProc); //same is above
+
+	public void maxProcessors (int n);
+
+	public List<Integer> getActiveProcs ();
 
 }

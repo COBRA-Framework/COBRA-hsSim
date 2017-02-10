@@ -19,6 +19,6 @@ package pt.ul.fc.di.lasige.simhs.core.domain.workload;
 public interface ISporadic extends IAbsSchedulable {
 	
 	
-	int getRelativeDeadline();
+	public int getRelativeDeadline();
 
 }

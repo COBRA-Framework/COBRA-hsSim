@@ -60,7 +60,8 @@ public class RTSystem extends Observable implements Observer {
 	
 	public void setScheduler(IScheduler s) {
 		this.rootComponent.setScheduler(s);		
-			s.addObserver(this);
+		s.addObserver(this);
+		s.setObserver(this);
 	}
 	
 	public void addChild(IAbsSchedulable at) {
@@ -99,8 +100,8 @@ public class RTSystem extends Observable implements Observer {
 	}
 
 	
-	public void bindProcessor(IProcessor proc) {
-		this.rootComponent.bindProcessor(proc);
+	public void bindProcessor(IProcessor proc, int numberOfProcessor) {
+		this.rootComponent.bindProcessor(proc,numberOfProcessor);
 	}
 
 
@@ -109,8 +110,8 @@ public class RTSystem extends Observable implements Observer {
 		return this.rootComponent;
 	}
 
-	public void unbindProcessor(IProcessor proc) {
-		this.rootComponent.unbindProcessor(proc);
+	public void unbindProcessor(IProcessor proc, int numberOfProcessor) {
+		this.rootComponent.unbindProcessor(proc,numberOfProcessor);
 	}
 
 	

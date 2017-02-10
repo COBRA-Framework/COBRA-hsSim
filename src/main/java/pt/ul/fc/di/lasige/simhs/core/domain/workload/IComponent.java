@@ -30,32 +30,32 @@ import pt.ul.fc.di.lasige.simhs.core.platform.IProcessor;
 public interface IComponent extends IAbsSchedulable,Cloneable,Observer {
 	
 
-	void addChild(IAbsSchedulable at);
+	public void addChild(IAbsSchedulable at);
 	
-	void setScheduler(IScheduler s);
+	public void setScheduler(IScheduler s);
 	
-	IScheduler getScheduler();
+	public IScheduler getScheduler();
 	
-	void tick();
+	public void tick();
 	
-	void tickle();
+	public void tickle();
 	
-	void tickle(double exec);
+	public void tickle(double exec);
 	
-	double getBudget();
+	public double getBudget();
 	
-	void addBudget(double plus);
+	public void addBudget(double plus);
 	
-	void consumeBudget(double exec);
+	public void consumeBudget(double exec);
 
-	void bindProcessor(IProcessor proc);
+	public void bindProcessor(IProcessor proc, int numberOfProc);
 
-	void unbindProcessor(IProcessor proc);
+	public void unbindProcessor(IProcessor proc, int numberOfProc);
 	
-	IComponent clone();
+	public IComponent clone();
 	
-	Workload getWorkload();
+	public Workload getWorkload();
 	
-	List<PeriodicInterfaceTask> getInterfaceTasks();
+	public List<PeriodicInterfaceTask> getInterfaceTasks();
 
 }

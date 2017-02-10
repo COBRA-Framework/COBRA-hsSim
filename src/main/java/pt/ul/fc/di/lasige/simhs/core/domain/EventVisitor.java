@@ -31,14 +31,14 @@ import pt.ul.fc.di.lasige.simhs.core.domain.events.JobReleasedEvent;
  */
 public interface EventVisitor<T> {
 	
-	T visit(ClockTickEvent e);
+	public T visit(ClockTickEvent e);
 	
-	T visit(JobReleasedEvent e);
+	public T visit(JobReleasedEvent e);
 	
-	T visit(JobDeadlineMissEvent e);
+	public T visit(JobDeadlineMissEvent e);
 	
-	T visit(JobCompletedEvent e);
+	public T visit(JobCompletedEvent e);
 	
-	T visit(JobPreemptedEvent e);
+	public T visit(JobPreemptedEvent e);
 
 }

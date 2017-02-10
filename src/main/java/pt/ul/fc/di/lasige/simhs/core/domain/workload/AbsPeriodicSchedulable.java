@@ -41,7 +41,9 @@ public abstract class AbsPeriodicSchedulable extends Observable implements IAbsS
 
 	private int nextReleaseTime = 0;
 	private int nextJobSequenceNo = 1;
-	
+	private int processor = 0;
+	private boolean isRunning = false;
+
 	public AbsPeriodicSchedulable clone() {
 		AbsPeriodicSchedulable other = null;
 		try {
@@ -58,12 +60,16 @@ public abstract class AbsPeriodicSchedulable extends Observable implements IAbsS
 		//TODO something?
 	}
 	
-	protected AbsPeriodicSchedulable(String id, IComponent parent, double capacity, int period, int deadline) {
+	protected AbsPeriodicSchedulable(String id, IComponent parent, double capacity, int period, int deadline, int processor) {
 		this.id = id;
 		this.parent = parent;
 		this.capacity = capacity;
 		this.period = period;
 		this.deadline = deadline;
+		this.processor = processor;
+	}
+	protected AbsPeriodicSchedulable(String id, IComponent parent, double capacity, int period, int deadline) {
+		this(id, parent, capacity, period, deadline, 1);
 	}
 	
 	protected AbsPeriodicSchedulable(String id, IComponent parent, double capacity, int period) {
@@ -81,7 +87,9 @@ public abstract class AbsPeriodicSchedulable extends Observable implements IAbsS
 	public int getRelativeDeadline() {
 		return this.deadline;
 	}
-	
+
+	public int getProcessor() {	return processor;	}
+
 	/* (non-Javadoc)
 	 * @see pt.ul.fc.di.lasige.simhs.domain.workload.IAbsSchedulable#getParent()
 	 */
@@ -181,6 +189,13 @@ public abstract class AbsPeriodicSchedulable extends Observable implements IAbsS
 	protected void incrementNextJobSequenceNo() {
 		this.nextJobSequenceNo++;
 	}
-	
-	
+
+	public boolean isRunning() {
+		return isRunning;
+	}
+
+	public void setRunning(boolean running) {
+		isRunning = running;
+	}
+
 }
