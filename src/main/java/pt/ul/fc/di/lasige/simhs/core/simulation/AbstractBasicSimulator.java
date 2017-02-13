@@ -60,11 +60,24 @@ public abstract class AbstractBasicSimulator extends Observable {
 	protected abstract long getSimulationTime();
 	
 	public void run() {
+		String process;
 		final long simulationTime = getSimulationTime();
+		int step = (int) simulationTime/30;
 		for (int t = 0; t <= simulationTime; t++) {
 			this.system.tick();
-			//System.out.println("Tick!");
+			if(t%step==0)
+			{
+				process="\rProcess: [";
+				for(int i=0;i<t/step;i++)
+					process+="=";
+				for(int i=(int)(simulationTime/step-1);i>t/step;i--)
+					process+=" ";
+				process+="]";
+				System.out.print(process);
+			}
+
 		}
+		System.out.println();
 		for (ILogger<?> logger: this.loggers) {
 			logger.close();
 		}

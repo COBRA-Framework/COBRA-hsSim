@@ -91,7 +91,7 @@ public class MPRSimulator extends AbstractBasicSimulator {
 		System.out.println("Simulation information:");
 		RTSystem system = new RTSystem(base);		
 		selectAlgorithm(system, parentScheduler);
-		System.out.println("\tScheduler system: "+parentScheduler);
+		System.out.println("\n\tScheduler system: "+parentScheduler);
 		for(Interface inter:interfaces){
 			for(Task task:inter.getTaskset()){
 				total += task.getExe();
@@ -105,7 +105,7 @@ public class MPRSimulator extends AbstractBasicSimulator {
 				System.out.println("\t"+task.toString());
 			}
 			vm = VMs.get(VMIndex);
-			System.out.println("TaskSet of "+inter.getInterfaceName());
+			System.out.println("\tTaskSet");
 			for(Task task:vm.getTaskset()) {
 				c1.addChild(new PeriodicTask(Integer.toString(taskIndex++), c1, task.getExe() * mul, (int) task.getPeriod() * mul, (int) task.getDeadline() * mul, task.getCore()));
 				System.out.println("\t"+task.toString());
@@ -118,7 +118,7 @@ public class MPRSimulator extends AbstractBasicSimulator {
 			total = 0;
 		}
 		
-		System.out.println("\tTime to simulate: "+SIMULATION_TIME+" ms");
+		System.out.println("\n\nTime to simulate: "+SIMULATION_TIME+" ms");
 		
 		return system;
 	}
