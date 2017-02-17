@@ -145,7 +145,10 @@ public class XMLInterpreter {
 			String period = node.getAttributes().getNamedItem("p").getNodeValue();
 			String deadline = node.getAttributes().getNamedItem("d").getNodeValue();
 			String exe = node.getAttributes().getNamedItem("e").getNodeValue();
-			String core = node.getAttributes().getNamedItem("core").getNodeValue();
+			String core="0";
+			Task currentTask;
+			if(node.getAttributes().getNamedItem("core") != null)
+				core = node.getAttributes().getNamedItem("core").getNodeValue();
 		/*	String delta_rel = "0", delta_sch = "0", delta_crpmd = "0", delta_cxs = "0";
 			if(node.getAttributes().getNamedItem("delta_rel") != null)
 				delta_rel= node.getAttributes().getNamedItem("delta_rel").getNodeValue();
@@ -155,7 +158,7 @@ public class XMLInterpreter {
 				delta_crpmd = node.getAttributes().getNamedItem("delta_crpmd").getNodeValue();
 			if(node.getAttributes().getNamedItem("delta_cxs") != null)
 				delta_cxs = node.getAttributes().getNamedItem("delta_cxs").getNodeValue();*/
-			Task currentTask = new Task(name, period,deadline, exe,core);
+			currentTask = new Task(name, period,deadline, exe,core);
 			parentComponent.addTask(currentTask);
 		}
 	}
@@ -193,7 +196,9 @@ public class XMLInterpreter {
 							String period = VCPU.getAttributes().getNamedItem("period").getNodeValue();
 							String deadline = VCPU.getAttributes().getNamedItem("deadline").getNodeValue();
 							String exe = VCPU.getAttributes().getNamedItem("execution_time").getNodeValue();
-							String core = VCPU.getAttributes().getNamedItem("core").getNodeValue();
+							String core = "0";
+							if(VCPU.getAttributes().getNamedItem("core") != null)
+								 core = VCPU.getAttributes().getNamedItem("core").getNodeValue();
 							Task currentTask = new Task(name, period,deadline, exe,core);
 							childInterface.addTask(currentTask);
 						}

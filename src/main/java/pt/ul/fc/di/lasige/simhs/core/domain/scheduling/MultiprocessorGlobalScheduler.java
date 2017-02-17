@@ -72,7 +72,8 @@ public abstract class MultiprocessorGlobalScheduler extends AbsScheduler impleme
 		final Map<IProcessor, Job> heirs = getHeirJobs();
 		final Map<IAbsSchedulable, Double> childrenToTickle = new TreeMap<IAbsSchedulable, Double>();
 
-		if(latestTickle!=getInternalTime()) {
+		//if(latestTickle!=getInternalTime()) {
+		if(true){
 			//if(getInternalTime()%1000==0)
 				//System.out.println(this+"  "+getInternalTime()+"  "+heirs.size()+" "+latestTickle);
 			for (IProcessor proc : heirs.keySet()) {
@@ -214,16 +215,15 @@ public abstract class MultiprocessorGlobalScheduler extends AbsScheduler impleme
 				eventQueue.add(indexToInsertBefore, ev);
 				
 				if (preempted != null) {
-					preempted.getParentTask().unbindProcessor(proc,0);
 					if(preempted.getPPT()!=null)
-						preempted.getParentTask().unbindProcessor(proc,preempted.getPPT().getProcessor());
+						preempted.getParentTask().unbindProcessor(proc,preempted.getPPT().getCoreID());
 					else
 						preempted.getParentTask().unbindProcessor(proc,-1);
 				}
 				if (preemptedBy != null) {
 					if(preemptedBy.getPPT()!=null) {
-						preemptedBy.getParentTask().unbindProcessor(proc, preemptedBy.getPPT().getProcessor());
-						preemptedBy.getParentTask().bindProcessor(proc, preemptedBy.getPPT().getProcessor());
+						preemptedBy.getParentTask().unbindProcessor(proc, preemptedBy.getPPT().getCoreID());
+						preemptedBy.getParentTask().bindProcessor(proc, preemptedBy.getPPT().getCoreID());
 					}
 					else {
 						preemptedBy.getParentTask().unbindProcessor(proc, -1);
@@ -268,7 +268,7 @@ public abstract class MultiprocessorGlobalScheduler extends AbsScheduler impleme
 		j.getParentTask().setRunning(false);
 		current.remove(toRemove);
 		if(j.getPPT()!=null)
-			j.getParentTask().unbindProcessor(toRemove,j.getPPT().getProcessor());
+			j.getParentTask().unbindProcessor(toRemove,j.getPPT().getCoreID());
 		else
 			j.getParentTask().unbindProcessor(toRemove,-1);
 

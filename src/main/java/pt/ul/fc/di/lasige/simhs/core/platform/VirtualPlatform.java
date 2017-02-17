@@ -51,6 +51,7 @@ public class VirtualPlatform implements IPlatform {
 	@Override
 	public void bindProcessor(IProcessor proc, int numberOfProc) {
 		this.procs.put(numberOfProc,new VirtualProcessor(proc));
+		//System.out.println("PROC BINDEND "+proc.toString()+" "+numberOfProc);
 	}
 
 	@Override
